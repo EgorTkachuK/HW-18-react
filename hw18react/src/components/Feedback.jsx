@@ -1,6 +1,7 @@
-import React, { useContext, useRef } from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import { GlobalContext } from '../context/GlobalContext';
+import { useFeedback } from '../hooks/useFeedback';
+
 
 const List = styled.ul`
   display: flex;
@@ -34,42 +35,28 @@ const Subtitle = styled.h2`
   color: #f0f0f0;
 `;
 
+
 export function Feedback() {
-  const { good, neutral, bad, incrementGood, incrementNeutral, incrementBad } = useContext(GlobalContext);
-
-  const lastClickedRef = useRef(null);
-
-  const total = good + neutral + bad;
-  const positiveFeedback = total === 0 ? 0 : Math.round((good / total) * 100);
-
-  const handleClick = (e, updater) => {
-    updater();
-
-    const btn = e.currentTarget;
-
-   
-    if (lastClickedRef.current && lastClickedRef.current !== btn) {
-      lastClickedRef.current.style.borderColor = 'transparent';
-      lastClickedRef.current.style.boxShadow = 'none';
-    }
-
-
-    btn.style.borderColor = '#1976d2';
-   
-
-  
-    lastClickedRef.current = btn;
-  };
+  const {
+    good,
+    neutral,
+    bad,
+    total,
+    positiveFeedback,
+    handleButtonStyle,
+    incrementGood,
+    incrementNeutral,
+    incrementBad
+  } = useFeedback();
 
   return (
     <div>
       <Text>Please leave feedback</Text>
       <div>
-        <Button onClick={e => handleClick(e, incrementGood)}>Good</Button>
-        <Button onClick={e => handleClick(e, incrementNeutral)}>Neutral</Button>
-        <Button onClick={e => handleClick(e, incrementBad)}>Bad</Button>
+        <Button onClick={e => handleButtonStyle(e, incrementGood)}>Good</Button>
+        <Button onClick={e => handleButtonStyle(e, incrementNeutral)}>Neutral</Button>
+        <Button onClick={e => handleButtonStyle(e, incrementBad)}>Bad</Button>
       </div>
-
       <Subtitle>{total === 0 ? 'No Feedbacks Yet' : 'Feedbacks :'}</Subtitle>
 
       {total > 0 && (

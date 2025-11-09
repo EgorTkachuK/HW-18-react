@@ -14,10 +14,7 @@ export function GlobalProvider({ children }) {
   });
 
   const [filter, setFilter] = useState('');
-  const [good, setGood] = useState(0);
-  const [neutral, setNeutral] = useState(0);
-  const [bad, setBad] = useState(0);
-  const [activeFeedback, setActiveFeedback] = useState(null);
+
 
   function addContact({ name, number }) {
     setContacts(prev => {
@@ -45,15 +42,6 @@ export function GlobalProvider({ children }) {
     });
   }
 
-  function incrementGood() {
-    setGood(prev => prev + 1);
-  }
-  function incrementNeutral() {
-    setNeutral(prev => prev + 1);
-  }
-  function incrementBad() {
-    setBad(prev => prev + 1);
-  }
 
   const value = {
     contacts,
@@ -61,15 +49,7 @@ export function GlobalProvider({ children }) {
     setFilter,
     addContact,
     deleteContact,
-    good,
-    neutral,
-    bad,
-    incrementGood,
-    incrementNeutral,
-    incrementBad,
-  
-    activeFeedback,
-    setActiveFeedback,
+    
   };
 
   return <GlobalContext.Provider value={value}>{children}</GlobalContext.Provider>;
